@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ВсеБанки.рф — Сравните условия банков России</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* === Сброс и базовые стили === */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f9fafb;
+      color: #1f2937;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* === Шапка === */
+    header {
+      background-color: #1E3A8A;
+      color: white;
+      padding: 16px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 700;
+      color: white;
+      text-decoration: none;
+      letter-spacing: 0.5px;
+    }
+
+    .search-box {
+      flex: 1;
+      max-width: 400px;
+      margin: 0 16px;
+      position: relative;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 12px 16px;
+      border: none;
+      border-radius: 50px;
+      font-size: 14px;
+      outline: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .btn {
+      background-color: #10B981;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #0d9d6e;
+    }
+
+    .btn-catalog {
+      background-color: #1E3A8A;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 50px;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    /* === Hero === */
+    .hero {
+      background-color: #1E3A8A;
+      color: white;
+      text-align: center;
+      padding: 80px 20px;
+      margin-bottom: 60px;
+    }
+
+    .hero h1 {
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      letter-spacing: -0.5px;
+    }
+
+    .hero p {
+      font-size: 18px;
+      margin-bottom: 32px;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* === Популярные категории === */
+    .categories {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      margin-bottom: 60px;
+    }
+
+    .category-card {
+      background: white;
+      border-radius: 16px;
+      padding: 32px 24px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      transition: transform 0.3s;
+    }
+
+    .category-card:hover {
+      transform: translateY(-6px);
+    }
+
+    .category-icon {
+      width: 60px;
+      height: 60px;
+      background-color: #e0f2fe;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      font-size: 24px;
+      font-weight: 700;
+      color: #1E3A8A;
+    }
+
+    .category-card h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .category-card .rate {
+      font-size: 20px;
+      font-weight: 700;
+      color: #10B981;
+    }
+
+    /* === Топ-5 вкладов === */
+    .section {
+      margin-bottom: 60px;
+    }
+
+    .section-title {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 24px;
+      color: #1E3A8A;
+      text-align: center;
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    .table th,
+    .table td {
+      padding: 14px 16px;
+      text-align: left;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .table th {
+      background-color: #f1f5f9;
+      font-weight: 600;
+      color: #1e293b;
+    }
+
+    .table tr:hover {
+      background-color: #f8fafc;
+    }
+
+    .rate-high {
+      font-weight: 700;
+      color: #10B981;
+      font-size: 18px;
+    }
+
+    /* === Каталог банков === */
+    .filters {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .filter {
+      padding: 8px 16px;
+      background-color: #f1f5f9;
+      border: 1px solid #d1d5db;
+      border-radius: 50px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .filter.active {
+      background-color: #1E3A8A;
+      color: white;
+      border-color: #1E3A8A;
+    }
+
+    .bank-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .bank-card {
+      background: white;
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: transform 0.2s;
+    }
+
+    .bank-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .bank-logo {
+      width: 48px;
+      height: 48px;
+      background-color: #1E3A8A;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 18px;
+    }
+
+    .bank-info {
+      flex: 1;
+    }
+
+    .bank-name {
+      font-weight: 600;
+      font-size: 16px;
+      color: #1e293b;
+    }
+
+    .bank-features {
+      font-size: 14px;
+      color: #6b7280;
+      margin-top: 4px;
+    }
+
+    .bank-checkbox {
+      width: 18px;
+      height: 18px;
+      border: 2px solid #d1d5db;
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .bank-checkbox.checked {
+      background-color: #10B981;
+      border-color: #10B981;
+    }
+
+    .bank-checkbox.checked::after {
+      content: "✓";
+      color: white;
+      font-size: 14px;
+    }
+
+    /* === Сравнение === */
+    .compare-section {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .compare-section .btn {
+      font-size: 16px;
+      padding: 14px 32px;
+      margin-top: 16px;
+    }
+
+    /* === Блог === */
+    .blog {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      margin-bottom: 60px;
+    }
+
+    .blog-card {
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      transition: transform 0.3s;
+    }
+
+    .blog-card:hover {
+      transform: translateY(-6px);
+    }
+
+    .blog-card h3 {
+      font-size: 18px;
+      font-weight: 600;
+      padding: 16px;
+      background-color: #f1f5f9;
+      margin: 0;
+    }
+
+    .blog-card p {
+      padding: 16px;
+      color: #6b7280;
+      font-size: 14px;
+    }
+
+    /* === Подвал === */
+    footer {
+      background-color: #1E3A8A;
+      color: white;
+      text-align: center;
+      padding: 32px 20px;
+      font-size: 14px;
+      margin-top: 40px;
+    }
+
+    footer a {
+      color: #a5f3fc;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    .disclaimer {
+      margin-top: 12px;
+      font-size: 12px;
+      color: #94a3b8;
+    }
+
+    /* === Адаптивность === */
+    @media (max-width: 768px) {
+      .header-content {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .search-box {
+        margin: 12px 0;
+      }
+
+      .hero h1 {
+        font-size: 28px;
+      }
+
+      .hero p {
+        font-size: 16px;
+      }
+
+      .categories,
+      .bank-list,
+      .blog {
+        grid-template-columns: 1fr;
+      }
+
+      .table th, .table td {
+        padding: 10px 8px;
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- === Шапка === -->
+  <header>
+    <div class="container header-content">
+      <a href="#" class="logo">ВсеБанки.рф</a>
+      <div class="search-box">
+        <input type="text" placeholder="Найти банк..." />
+      </div>
+      <a href="#catalog" class="btn-catalog">Каталог</a>
+    </div>
+  </header>
+
+  <!-- === Главный экран (Hero) === -->
+  <section class="hero">
+    <div class="container">
+      <h1>Все банки России в одном месте</h1>
+      <p>Сравните условия по вкладам, картам и кредитам и выберите лучшее</p>
+      <button class="btn">Смотреть категории</button>
+    </div>
+  </section>
+
+  <!-- === Популярные категории === -->
+  <section class="container">
+    <h2 class="section-title">Популярные категории</h2>
+    <div class="categories">
+      <div class="category-card">
+        <div class="category-icon">💰</div>
+        <h3>Вклады</h3>
+        <p class="rate">до 21%</p>
+      </div>
+      <div class="category-card">
+        <div class="category-icon">💳</div>
+        <h3>Кредитные карты</h3>
+        <p class="rate">до 120 дней без %</p>
+      </div>
+      <div class="category-card">
+        <div class="category-icon">🏦</div>
+        <h3>Накопительные счета</h3>
+        <p class="rate">до 17%</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- === Топ-5 вкладов сегодня === -->
+  <section class="container">
+    <h2 class="section-title">Топ-5 вкладов сегодня</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Банк</th>
+          <th>Ставка</th>
+          <th>Срок</th>
+          <th>Мин. сумма</th>
+          <th>Рейтинг</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Сбербанк</td>
+          <td class="rate">21%</td>
+          <td>12 мес</td>
+          <td>1000 ₽</td>
+          <td>⭐⭐⭐⭐⭐</td>
+        </tr>
+        <tr>
+          <td>ВТБ</td>
+          <td class="rate">20.5%</td>
+          <td>6 мес</td>
+          <td>5000 ₽</td>
+          <td>⭐⭐⭐⭐☆</td>
+        </tr>
+        <tr>
+          <td>Альфа-Банк</td>
+          <td class="rate">20%</td>
+          <td>12 мес</td>
+          <td>10000 ₽</td>
+          <td>⭐⭐⭐⭐☆</td>
+        </tr>
+        <tr>
+          <td>Т-Банк</td>
+          <td class="rate">19.8%</td>
+          <td>6 мес</td>
+          <td>1000 ₽</td>
+          <td>⭐⭐⭐☆☆</td>
+        </tr>
+        <tr>
+          <td>Газпромбанк</td>
+          <td class="rate">18.5%</td>
+          <td>12 мес</td>
+          <td>5000 ₽</td>
+          <td>⭐⭐⭐⭐☆</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- === Каталог банков === -->
+  <section id="catalog" class="container">
+    <h2 class="section-title">Каталог банков</h2>
+    <div class="filters">
+      <div class="filter active">Все категории</div>
+      <div class="filter">Ставка</div>
+      <div class="filter">Сумма</div>
+    </div>
+    <div class="bank-list">
+      <div class="bank-card">
+        <div class="bank-logo">С</div>
+        <div class="bank-info">
+          <div class="bank-name">Сбербанк</div>
+          <div class="bank-features">Вклады: до 21%, Кредиты: от 8.9%</div>
+        </div>
+        <div class="bank-checkbox"></div>
+      </div>
+      <div class="bank-card">
+        <div class="bank-logo">В</div>
+        <div class="bank-info">
+          <div class="bank-name">ВТБ</div>
+          <div class="bank-features">Вклады: до 20.5%, Кредиты: от 8.4%</div>
+        </div>
+        <div class="bank-checkbox"></div>
+      </div>
+      <div class="bank-card">
+        <div class="bank-logo">А</div>
+        <div class="bank-info">
+          <div class="bank-name">Альфа-Банк</div>
+          <div class="bank-features">Вклады: до 20%, Кредиты: от 9.5%</div>
+        </div>
+        <div class="bank-checkbox"></div>
+      </div>
+      <div class="bank-card">
+        <div class="bank-logo">Т</div>
+        <div class="bank-info">
+          <div class="bank-name">Т-Банк</div>
+          <div class="bank-features">Вклады: до 19.8%, Кредиты: от 9.1%</div>
+        </div>
+        <div class="bank-checkbox"></div>
+      </div>
+      <div class="bank-card">
+        <div class="bank-logo">Г</div>
+        <div class="bank-info">
+          <div class="bank-name">Газпромбанк</div>
+          <div class="bank-features">Вклады: до 18.5%, Кредиты: от 8.8%</div>
+        </div>
+        <div class="bank-checkbox"></div>
+      </div>
+      <div class="bank-card">
+        <div class="bank-logo">Р</div>
+        <div class="bank-info">
+          <div class="bank-name">Райффайзенбанк</div>
+          <div class="bank-features">Вклады: до 18.2%, Кредиты: от 9.3%</div>
+        </div>
+        <div class="bank-checkbox"></div>
+      </div>
+      <div class="bank-card">
+        <div class="bank-logo">П</div>
+        <div class="bank-info">
+          <div class="bank-name">Почта Банк</div>
+          <div class="bank-features">Вклады: до 17.5%, Кредиты: от 10.5%</div>
+        </div>
+        <div class="bank-checkbox"></div>
+      </div>
+      <div class="bank-card">
+        <div class="bank-logo">Т</div>
+        <div class="bank-info">
+          <div class="bank-name">Тинькофф</div>
+          <div class="bank-features">Вклады: до 17.1%, Кредиты: от 7.9%</div>
+        </div>
+        <div class="bank-checkbox"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- === Сравнение === -->
+  <section class="container compare-section">
+    <h2 class="section-title">Выберите до 3 банков для сравнения</h2>
+    <button class="btn">Сравнить</button>
+  </section>
+
+  <!-- === Блог === -->
+  <section class="container">
+    <h2 class="section-title">Полезные статьи</h2>
+    <div class="blog">
+      <div class="blog-card">
+        <h3>Как выбрать выгодный вклад в 2025 году?</h3>
+        <p>Советы по ставкам, срокам и условиям — что важно учитывать при открытии вклада.</p>
+      </div>
+      <div class="blog-card">
+        <h3>Кредитные карты без процентов: как не провалиться?</h3>
+        <p>Как использовать беспроцентные кредитные карты без рисков.</p>
+      </div>
+      <div class="blog-card">
+        <h3>Накопительные счета: плюсы и минусы</h3>
+        <p>Сравнение с вкладами — где лучше хранить деньги?</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- === Подвал === -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 ВсеБанки.рф — Все права защищены</p>
+      <p>
+        <a href="#">Политика конфиденциальности</a> |
+        <a href="#">Дисклеймер</a>
+      </p>
+      <p class="disclaimer">Информация на сайте носит справочный характер и не является публичной офертой.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Простая интерактивность: чекбоксы
+    document.querySelectorAll('.bank-checkbox').forEach(box => {
+      box.addEventListener('click', function () {
+        this.classList.toggle('checked');
+      });
+    });
+
+    // Фильтры (в реальности — AJAX-фильтрация)
+    document.querySelectorAll('.filter').forEach(filter => {
+      filter.addEventListener('click', function () {
+        document.querySelectorAll('.filter').forEach(f => f.classList.remove('active'));
+        this.classList.add('active');
+      });
+    });
+
+    // Пример: кнопка "Сравнить"
+    document.querySelector('.btn').addEventListener('click', function () {
+      alert('Выбраны банки для сравнения. В реальной версии откроется таблица сравнения.');
+    });
+  </script>
+
+</body>
+</html>
